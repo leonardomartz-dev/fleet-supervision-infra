@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!DOCTYPE properties SYSTEM 'http://java.sun.com/dtd/properties.dtd'>
+
+<properties>
+
+    <!-- Web interface -->
+    <entry key='web.origin'>*</entry>
+    <entry key='web.registration'>true</entry>
+
+    <!-- Database: built-in H2 for Phase 1 testing (swap to PostgreSQL in Phase 3) -->
+    <entry key='database.driver'>org.h2.Driver</entry>
+    <entry key='database.url'>jdbc:h2:/opt/traccar/data/database</entry>
+    <entry key='database.user'>sa</entry>
+    <entry key='database.password'></entry>
+
+    <!-- OsmAnd protocol — used by Freematics devices and GPS simulation -->
+    <entry key='osmand.port'>5055</entry>
+
+    <!-- Filter: ignore positions with speed > 200 km/h (removes noise) -->
+    <entry key='filter.enable'>true</entry>
+    <entry key='filter.maxSpeed'>200</entry>
+
+    <!-- Event processing -->
+    <entry key='event.enable'>true</entry>
+    <entry key='processing.computedAttributes.enable'>true</entry>
+
+</properties>

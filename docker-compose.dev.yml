@@ -1,0 +1,22 @@
+services:
+  traccar:
+    ports:
+      - "8086:8082"
+      - "5055:5055"
+
+  postgres:
+    ports:
+      - "5433:5432"
+
+  app:
+    build:
+      context: ./app
+      target: dev
+    volumes:
+      - ./app:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      TRACCAR_URL: http://host.docker.internal:8086
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

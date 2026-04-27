@@ -1,0 +1,49 @@
+services:
+  traccar:
+    image: traccar/traccar:latest
+    container_name: fleet-traccar
+    restart: unless-stopped
+    ports:
+      - "8086:8082"   # Web UI + REST API (8082 in use by Firefly)
+      - "5055:5055"   # OsmAnd protocol (Freematics + simulation)
+    volumes:
+      - ./traccar/conf/traccar.xml:/opt/traccar/conf/traccar.xml:ro
+      - ./traccar/data:/opt/traccar/data
+
+  postgres:
+    image: postgres:15
+    container_name: fleet-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-fleet}
+      POSTGRES_USER: ${DB_USER:-fleet}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: ./app
+    container_name: fleet-app
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      TRACCAR_URL: http://traccar:8082
+      TRACCAR_API_USER: ${TRACCAR_API_USER}
+      TRACCAR_API_PASSWORD: ${TRACCAR_API_PASSWORD}
+      APP_SECRET: ${APP_SECRET}
+      ENVIRONMENT: ${ENVIRONMENT:-demo}
+      NEXT_PUBLIC_MAP_DEFAULT_LAT: ${NEXT_PUBLIC_MAP_DEFAULT_LAT:-46.2300}
+      NEXT_PUBLIC_MAP_DEFAULT_LON: ${NEXT_PUBLIC_MAP_DEFAULT_LON:--119.1200}
+      NEXT_PUBLIC_MAP_DEFAULT_ZOOM: ${NEXT_PUBLIC_MAP_DEFAULT_ZOOM:-12}
+      MIN_TRIP_DURATION_MINUTES: ${MIN_TRIP_DURATION_MINUTES:-10}
+      MIN_TRIP_DISTANCE_MILES: ${MIN_TRIP_DISTANCE_MILES:-0.5}
+      GEOFENCE_CONFIDENCE_THRESHOLD: ${GEOFENCE_CONFIDENCE_THRESHOLD:-80}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - traccar
+      - postgres
+
+volumes:
+  postgres-data:

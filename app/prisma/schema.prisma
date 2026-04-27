@@ -1,0 +1,165 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Vehicle {
+  id              Int       @id @default(autoincrement())
+  name            String
+  year            Int
+  make            String
+  model           String
+  vin             String?
+  traccarDeviceId Int       @unique
+  costCategory    Category  @default(UNASSIGNED)
+  active          Boolean   @default(true)
+  obdAccessible   Boolean   @default(true)
+  notes           String?
+  createdAt       DateTime  @default(now())
+
+  device            GpsDevice?
+  trips             Trip[]
+
+  @@map("vehicles")
+}
+
+model GpsDevice {
+  id          Int      @id @default(autoincrement())
+  imei        String   @unique
+  model       String
+  vehicleId   Int      @unique
+  installedAt DateTime
+  active      Boolean  @default(true)
+
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id])
+
+  @@map("gps_devices")
+}
+
+model Property {
+  id             Int      @id @default(autoincrement())
+  appfolioId     String?
+  name           String
+  address        String
+  lat            Float
+  lon            Float
+  geofenceId     Int      @unique
+  geofenceRadius Int      @default(150)
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now())
+
+  stops             Stop[]
+  allocationRecords AllocationRecord[]
+  exceptions        Exception[]
+
+  @@map("properties")
+}
+
+model Trip {
+  id              Int        @id @default(autoincrement())
+  traccarTripId   String?
+  vehicleId       Int
+  startTime       DateTime
+  endTime         DateTime
+  startLat        Float
+  startLon        Float
+  endLat          Float
+  endLon          Float
+  distanceMiles   Float
+  durationMinutes Int
+  status          TripStatus @default(AUTO)
+  reviewedBy      String?
+  reviewedAt      DateTime?
+  createdAt       DateTime   @default(now())
+
+  vehicle           Vehicle            @relation(fields: [vehicleId], references: [id])
+  stops             Stop[]
+  allocationRecords AllocationRecord[]
+  exception         Exception?
+
+  @@map("trips")
+}
+
+model Stop {
+  id              Int      @id @default(autoincrement())
+  tripId          Int
+  propertyId      Int?
+  arriveTime      DateTime
+  departTime      DateTime
+  durationMinutes Int
+  lat             Float
+  lon             Float
+  confidenceScore Int      @default(0)
+
+  trip     Trip      @relation(fields: [tripId], references: [id])
+  property Property? @relation(fields: [propertyId], references: [id])
+
+  @@map("stops")
+}
+
+model AllocationRecord {
+  id                Int              @id @default(autoincrement())
+  tripId            Int
+  propertyId        Int
+  costCategory      Category
+  mileage           Float
+  driveTimeMinutes  Int
+  timeOnSiteMinutes Int?
+  allocationMethod  AllocationMethod @default(AUTO)
+  confidenceScore   Int
+  reportingPeriod   String
+  exportedAt        DateTime?
+  createdAt         DateTime         @default(now())
+
+  trip     Trip     @relation(fields: [tripId], references: [id])
+  property Property @relation(fields: [propertyId], references: [id])
+
+  @@map("allocation_records")
+}
+
+model Exception {
+  id                 Int             @id @default(autoincrement())
+  tripId             Int             @unique
+  reason             ExceptionReason
+  assignedPropertyId Int?
+  assignedCategory   Category?
+  reviewed           Boolean         @default(false)
+  reviewedBy         String?
+  notes              String?
+  createdAt          DateTime        @default(now())
+
+  trip             Trip      @relation(fields: [tripId], references: [id])
+  assignedProperty Property? @relation(fields: [assignedPropertyId], references: [id])
+
+  @@map("exceptions")
+}
+
+enum Category {
+  RM
+  GROUNDS
+  TURNS
+  UNASSIGNED
+}
+
+enum TripStatus {
+  AUTO
+  MANUAL
+  EXCEPTION
+  EXCLUDED
+}
+
+enum AllocationMethod {
+  AUTO
+  MANUAL
+}
+
+enum ExceptionReason {
+  NO_GEOFENCE
+  LOW_CONFIDENCE
+  SHORT_TRIP
+  MANUAL_FLAG
+}

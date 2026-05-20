@@ -1,26 +1,139 @@
-@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+@import "react-day-picker/style.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --page-bg: #090d12;
+  --shell-bg: #0d141c;
+  --surface: #121a24;
+  --surface-raised: #182331;
+  --border: #243242;
+  --border-strong: #35475a;
+  --text: #eef4f8;
+  --text-soft: #c4d0da;
+  --muted: #81909f;
+  --status-green: #42d392;
+  --status-amber: #f6b84b;
+  --status-red: #ff6b6b;
+  --status-neutral: #8996a3;
+  --accent-blue: #53b1ff;
+  --shadow-soft: 0 18px 45px rgb(0 0 0 / 0.22);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--page-bg);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background:
+    linear-gradient(180deg, rgba(83, 177, 255, 0.08), transparent 320px),
+    var(--page-bg);
+  color: var(--text);
+  font-family: "Aptos", "Segoe UI", Arial, Helvetica, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(83, 177, 255, 0.35);
+}
+
+.leaflet-container {
+  min-height: 560px;
+  background: #101820;
+  font: inherit;
+}
+
+.leaflet-control-attribution,
+.leaflet-control-zoom a {
+  background: rgba(18, 26, 36, 0.92) !important;
+  border-color: var(--border) !important;
+  color: var(--text-soft) !important;
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: var(--surface-raised);
+  color: var(--text);
+}
+
+.vehicle-marker {
+  align-items: center;
+  background: var(--marker-color, var(--status-neutral));
+  border: 2px solid #071017;
+  border-radius: 999px;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.24), 0 12px 26px rgb(0 0 0 / 0.35);
+  display: flex;
+  height: 18px;
+  justify-content: center;
+  width: 18px;
+}
+
+.rdp-root {
+  --rdp-accent-color: var(--accent-blue);
+  --rdp-accent-background-color: rgba(83, 177, 255, 0.18);
+  --rdp-day-height: 38px;
+  --rdp-day-width: 38px;
+  --rdp-day_button-height: 34px;
+  --rdp-day_button-width: 34px;
+  --rdp-range_middle-color: var(--text);
+  --rdp-selected-border: 1px solid var(--accent-blue);
+
+  color: var(--text);
+  margin: 0;
+}
+
+.rdp-months {
+  max-width: none;
+}
+
+.rdp-month {
+  width: 100%;
+}
+
+.rdp-month_grid {
+  width: 100%;
+}
+
+.rdp-caption_label {
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.rdp-weekday {
+  color: var(--muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+}
+
+.rdp-day_button {
+  border-radius: 6px;
+}
+
+.rdp-button_next,
+.rdp-button_previous {
+  border-radius: 6px;
+  color: var(--text-soft);
+}
+
+.rdp-button_next:hover,
+.rdp-button_previous:hover,
+.rdp-day_button:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.rdp-range_middle .rdp-day_button {
+  border-radius: 0;
 }

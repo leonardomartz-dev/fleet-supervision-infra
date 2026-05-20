@@ -14,8 +14,13 @@
     <entry key='database.user'>sa</entry>
     <entry key='database.password'></entry>
 
-    <!-- OsmAnd protocol — used by Freematics devices and GPS simulation -->
+    <!-- OsmAnd protocol — used for GPS simulation -->
     <entry key='osmand.port'>5055</entry>
+
+    <!-- Mictrack MP91 OBD-II devices — protocol is H02 or Huabao, both map to port 5013 -->
+    <!-- If device does not report after first connect, swap huabao for h02 in the entry below -->
+    <entry key='huabao.port'>5013</entry>
+    <!-- <entry key='h02.port'>5013</entry> -->
 
     <!-- Filter: ignore positions with speed > 200 km/h (removes noise) -->
     <entry key='filter.enable'>true</entry>

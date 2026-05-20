@@ -5,7 +5,8 @@ services:
     restart: unless-stopped
     ports:
       - "8086:8082"   # Web UI + REST API (8082 in use by Firefly)
-      - "5055:5055"   # OsmAnd protocol (Freematics + simulation)
+      - "5055:5055"   # OsmAnd protocol (simulation)
+      - "5013:5013"   # Huabao protocol (Mictrack MP91)
     volumes:
       - ./traccar/conf/traccar.xml:/opt/traccar/conf/traccar.xml:ro
       - ./traccar/data:/opt/traccar/data
@@ -24,6 +25,7 @@ services:
   app:
     build:
       context: ./app
+      target: runner
     container_name: fleet-app
     restart: unless-stopped
     environment:

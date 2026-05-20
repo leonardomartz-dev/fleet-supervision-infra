@@ -7,13 +7,13 @@ export const dynamic = "force-dynamic";
 
 const milestones = [
   ["Demo foundation", "Complete", "Traccar, Postgres, Prisma, API checks, and app scaffold are running."],
-  ["Public dashboard", "Complete", "fleet-demo.leonardomartz.com serves the Fleet Supervisor dashboard."],
+  ["Public dashboard", "Complete", "A protected demo host serves the Fleet Supervisor dashboard."],
   ["Demo data workflow", "Complete", "Seeded vehicle, properties, trips, allocation record, and report output are available."],
   ["Dashboard cleanup", "Complete", "Vehicles, map, trips, properties, and reports are simplified for review."],
   ["Filtered reports", "Complete", "Reports support property, vehicle, and date-range filtering with filtered CSV export."],
   ["Company repo", "Pending", "Transfer or fork to company-controlled GitHub before pilot."],
-  ["Company host", "Pending", "AWS EC2 or company VPS owner must be confirmed with Matthew/JY."],
-  ["Cloudflare Access", "Pending", "fleet.rentpalousehomes.com must be protected before live use."],
+  ["Company host", "Pending", "Production hosting ownership must be confirmed before pilot."],
+  ["Cloudflare Access", "Pending", "The live host must be protected before real vehicle data is used."],
   ["Backups", "Pending", "Postgres dump and Traccar config export need owner and restore test."],
 ];
 

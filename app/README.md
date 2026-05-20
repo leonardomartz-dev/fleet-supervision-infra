@@ -30,7 +30,6 @@ npm run build
 
 ## Demo Boundary
 
-- Leo's repo/server are demo-only.
+- This repo/server are demo-only.
 - Do not connect real GPS devices or real vehicle movement data here.
 - Production requires company-controlled GitHub ownership, host, Docker deployment, backups, and Cloudflare Access.
-
